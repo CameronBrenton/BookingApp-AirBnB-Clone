@@ -7,9 +7,18 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function registerUser(ev) {
-	ev.preventDefault()
-	axios.get('http://localhost:4000/test')
+  async function registerUser(ev) {
+    ev.preventDefault();
+    try {
+      await axios.post("/register", {
+        name,
+        email,
+        password,
+      });
+      alert("Registration successful. Now you can log in");
+    } catch (error) {
+      alert("Registration failed. Please try again later");
+    }
   }
 
   return (
@@ -23,14 +32,21 @@ export default function RegisterPage() {
             value={name}
             onChange={(ev) => setName(ev.target.value)}
           />
-          <input type="email" placeholder="youremail.com" value={email} onChange={ev => setEmail(ev.target.value)}/>
-          <input type="password" placeholder="password" value={password} onChange={ev => setPassword(ev.target.value)}/>
+          <input
+            type="email"
+            placeholder="youremail.com"
+            value={email}
+            onChange={(ev) => setEmail(ev.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(ev) => setPassword(ev.target.value)}
+          />
           <button className="primary">Register</button>
           <div className="py-2 text-center text-gray-500">
-            Don't have an account yet?
-            <Link className="text-black underline" to={"/register"}>
-              Register now
-            </Link>
+            Don't have an account yet? <Link className="text-black underline" to={"/register"}>Register now</Link>
           </div>
         </form>
       </div>
