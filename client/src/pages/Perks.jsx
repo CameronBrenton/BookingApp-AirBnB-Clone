@@ -1,4 +1,4 @@
-export default function Perks() {
+export default function Perks({selected, onChange}) {
 	return (
 		<>
 			<label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
