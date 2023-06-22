@@ -39,6 +39,21 @@ export default function PlacesPage() {
     });
     setPhotoLink("");
   }
+  function uploadPhoto(ev) {
+	const files = ev.target.files;
+	const data = new FormData();
+	for (let i=0; i<files.length; i++) {
+		data.append('photos', files[i]);
+	}
+	axios.post('/upload', data, {
+		headers: {'Content-type':'multipart/form-data'}
+	}).then(response => {
+		const {data:filenames} = response;
+		setAddedPhotos(prev => {
+			return [...prev, ...filenames];
+		});
+	})
+  }
   return (
     <div>
       {action !== "new" && (
@@ -100,10 +115,15 @@ export default function PlacesPage() {
                 Add&nbsp;photos
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-1 mt-2 lg:grid-cols-6 md:grid-cols-4">
+            <div className="grid grid-cols-3 gap-2 mt-2 lg:grid-cols-6 md:grid-cols-4">
               {addedPhotos.length > 0 &&
-                addedPhotos.map((link, index) => <div key={index}>{link}</div>)}
-              <button className="flex justify-center p-8 text-2xl text-gray-600 bg-transparent border rounded-2xl">
+                addedPhotos.map((link, index) => (
+                  <div key={index}>
+                    <img className="rounded-2xl" src={"http://localhost:4000/uploads/" + link} alt="" />
+                  </div>
+                ))}
+              <label className="flex items-center justify-center p-2 text-2xl text-gray-600 bg-transparent border cursor-pointer rounded-2xl">
+			  	<input type="file" multiple className="hidden" onChange={uploadPhoto}/>
                 <svg
                   className="w-8 h-8"
                   width="15"
@@ -120,7 +140,7 @@ export default function PlacesPage() {
                   ></path>
                 </svg>
                 Upload
-              </button>
+              </label>
             </div>
             {preInput("Description", "description of the place")}
             <textarea
@@ -129,7 +149,7 @@ export default function PlacesPage() {
             />
             {preInput("Perks", "select all the perks of your place")}
             <div className="grid grid-cols-2 gap-2 mt-2 md:grid-cols-3 lg:grid-cols-6">
-              <Perks slected={perks} onChange={setPerks} />
+              <Perks selected={perks} onChange={setPerks} />
             </div>
             {preInput("Extra info", "house rules, etc")}
             <textarea
