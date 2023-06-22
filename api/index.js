@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/User.js');
 const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
+const multer = require('multer');
+const fs = require('fs')
+
 require('dotenv').config();
 const app = express();
 
@@ -13,6 +16,7 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'dsvuh4t8usvbdjb3492udsjbj23408sdv'
 
 app.use(express.json());
+app.use('/uploads', express.static(__dirname+'/uploads'))
 app.use(cookieParser());
 app.use(cors({
 	credentials: true,
@@ -73,7 +77,7 @@ app.get('/profile', (req, res) => {
 app.post('/logout', (req, res) => {
 	res.cookie('token', '').json(true);
 })
-console.log({__dirname})
+
 app.post('/upload-by-link', async (req, res) => {
 	const {link} = req.body;
 	const newName = 'photo' + Date.now() + '.jpg';
@@ -83,5 +87,19 @@ app.post('/upload-by-link', async (req, res) => {
 	});
 	res.json(newName);
 })
+
+const photosMiddleWare = multer({dest:'uploads/'});
+app.post('/upload', photosMiddleWare.array('photos', 100) , (req, res) => {
+	const uploadedFiles = [];
+	for (let i = 0; i < req.files.length; i++) {
+		const {path, originalname} = req.files[i];
+		const parts = originalname.split('.');
+		const ext = parts[parts.length - 1];
+		const newPath = path + '.' + ext;
+		fs.renameSync(path, newPath);
+		uploadedFiles.push(newPath.replace('uploads/', ''));
+	}
+	res.json(uploadedFiles);
+});
 
 app.listen(4000);
