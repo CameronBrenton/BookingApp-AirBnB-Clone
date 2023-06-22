@@ -40,19 +40,21 @@ export default function PlacesPage() {
     setPhotoLink("");
   }
   function uploadPhoto(ev) {
-	const files = ev.target.files;
-	const data = new FormData();
-	for (let i=0; i<files.length; i++) {
-		data.append('photos', files[i]);
-	}
-	axios.post('/upload', data, {
-		headers: {'Content-type':'multipart/form-data'}
-	}).then(response => {
-		const {data:filenames} = response;
-		setAddedPhotos(prev => {
-			return [...prev, ...filenames];
-		});
-	})
+    const files = ev.target.files;
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append("photos", files[i]);
+    }
+    axios
+      .post("/upload", data, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data: filenames } = response;
+        setAddedPhotos((prev) => {
+          return [...prev, ...filenames];
+        });
+      });
   }
   return (
     <div>
@@ -119,11 +121,20 @@ export default function PlacesPage() {
               {addedPhotos.length > 0 &&
                 addedPhotos.map((link, index) => (
                   <div key={index} className="flex h-32">
-                    <img className="object-cover w-full rounded-2xl" src={"http://localhost:4000/uploads/" + link} alt="" />
+                    <img
+                      className="object-cover w-full rounded-2xl"
+                      src={"http://localhost:4000/uploads/" + link}
+                      alt=""
+                    />
                   </div>
                 ))}
               <label className="flex items-center justify-center h-32 p-2 text-2xl text-gray-600 bg-transparent border cursor-pointer rounded-2xl">
-			  	<input type="file" multiple className="hidden" onChange={uploadPhoto}/>
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={uploadPhoto}
+                />
                 <svg
                   className="w-8 h-8"
                   width="15"
