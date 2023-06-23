@@ -1,8 +1,18 @@
 export default function Perks({selected, onChange}) {
+	function handleCbClick(ev) {
+		console.log(ev.target.name)
+		const {checked, name} = ev.target
+		if (checked) {
+			onChange([...selected, name]);
+		} else {
+			onChange([...selected.filter(selectedName => selectedName !== name)]);
+		}
+		
+	}
 	return (
 		<>
 			<label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="wifi" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -20,7 +30,7 @@ export default function Perks({selected, onChange}) {
                 <span>Wifi</span>
               </label>
               <label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="parking" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -38,7 +48,7 @@ export default function Perks({selected, onChange}) {
                 <span>Free parking spot</span>
               </label>
               <label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="tv" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -56,7 +66,7 @@ export default function Perks({selected, onChange}) {
                 <span>TV</span>
               </label>
               <label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="radio" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -74,7 +84,7 @@ export default function Perks({selected, onChange}) {
                 <span>Pets</span>
               </label>
               <label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="pets" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -92,7 +102,7 @@ export default function Perks({selected, onChange}) {
                 <span>Private entrance</span>
               </label>
               <label className="flex items-center gap-2 p-4 border cursor-pointer rounded-2xl">
-                <input type="checkbox" className="" />
+                <input type="checkbox" name="entrance" className="" onChange={handleCbClick}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
