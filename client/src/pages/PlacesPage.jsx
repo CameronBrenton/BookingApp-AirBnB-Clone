@@ -1,8 +1,4 @@
-import { useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import Perks from "../Perks";
-import axios from "axios";
-import PhotosUploader from "../PhotosUploader";
+import { Link, useParams } from "react-router-dom";
 import PlacesFormPage from "./PlacesFormPage";
 
 export default function PlacesPage() {
