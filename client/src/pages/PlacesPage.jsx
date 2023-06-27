@@ -39,9 +39,9 @@ export default function PlacesPage() {
         {places.length > 0 &&
           places.map((place, index) => (
             <Link to={'/account/places/'+place._id} key={index} className="flex gap-4 p-4 bg-gray-100 cursor-pointer rounded-2xl">
-              <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+              <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
                 {place.photos.length > 0 && (
-                  <img src={place.photos[0]} alt="" />
+                  <img className="object-cover" src={'http://localhost:4000/uploads/' + place.photos[0]} alt="" />
                 )}
               </div>
               <div className="grow-0 shrink">
