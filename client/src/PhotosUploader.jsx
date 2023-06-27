@@ -30,8 +30,15 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
         });
       });
   }
-  function removePhoto(filename) {
+  function removePhoto(ev, filename) {
+	ev.preventDefault();
     onChange([...addedPhotos.filter((photo) => photo !== filename)]);
+  }
+  function selectAsMainPhoto(ev, filename) {
+	ev.preventDefault();
+    const addedPhotosWithoutSelected = addedPhotos.filter((photo) => photo !== filename);
+	const newAddedPhotos = [filename, ...addedPhotosWithoutSelected];
+	onChange(newAddedPhotos);
   }
   return (
     <>
@@ -59,7 +66,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
                 alt=""
               />
               <button
-                onClick={() => removePhoto(link)}
+                onClick={ev => removePhoto(ev, link)}
                 className="absolute px-3 py-2 text-white bg-black bg-opacity-50 cursor-pointer bottom-1 right-1 rounded-2xl"
               >
                 <svg
@@ -78,7 +85,7 @@ export default function PhotosUploader({ addedPhotos, onChange }) {
                 </svg>
               </button>
               <button
-                onClick={() => selectAsMainPhoto(link)}
+                onClick={ev => selectAsMainPhoto(ev, link)}
                 className="absolute px-3 py-2 text-white bg-black bg-opacity-50 cursor-pointer bottom-1 left-1 rounded-2xl"
               >
                 {link === addedPhotos[0] && (
