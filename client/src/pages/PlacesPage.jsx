@@ -1,12 +1,10 @@
-import { Link, useParams } from "react-router-dom";
-import PlacesFormPage from "./PlacesFormPage";
+import { Link } from "react-router-dom";
+import AccountNav from "../AccountNav";
 
 export default function PlacesPage() {
-  const { action } = useParams();
-  
   return (
     <div>
-      {action !== "new" && (
+		<AccountNav />
         <div className="text-center">
           <Link
             className="inline-flex items-center gap-1 px-6 py-2 text-white rounded-full bg-primary"
@@ -29,10 +27,6 @@ export default function PlacesPage() {
             Add new place
           </Link>
         </div>
-      )}
-      {action === "new" && (
-        <PlacesFormPage />
-      )}
     </div>
   );
 }
