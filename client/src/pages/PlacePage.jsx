@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
@@ -5,6 +6,7 @@ import axios from "axios";
 export default function PlacePage() {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
   useEffect(() => {
     if (!id) {
       return;
@@ -17,19 +19,77 @@ export default function PlacePage() {
   if (!place) {
     return "";
   }
+
+  if (showAllPhotos) {
+    return (
+      <div className="absolute inset-0 min-h-screen text-white bg-black">
+        <div className="grid gap-4 p-8 bg-black ">
+          <div className="">
+            <h2 className="text-3xl">Photos of {place.title}</h2>
+            <button
+              onClick={() => setShowAllPhotos(false)}
+              className="fixed flex items-center gap-1 px-4 py-2 text-black bg-white shadow right-12 top-8 shadow-black rounded-2xl"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.8536 2.85355C13.0488 2.65829 13.0488 2.34171 12.8536 2.14645C12.6583 1.95118 12.3417 1.95118 12.1464 2.14645L7.5 6.79289L2.85355 2.14645C2.65829 1.95118 2.34171 1.95118 2.14645 2.14645C1.95118 2.34171 1.95118 2.65829 2.14645 2.85355L6.79289 7.5L2.14645 12.1464C1.95118 12.3417 1.95118 12.6583 2.14645 12.8536C2.34171 13.0488 2.65829 13.0488 2.85355 12.8536L7.5 8.20711L12.1464 12.8536C12.3417 13.0488 12.6583 13.0488 12.8536 12.8536C13.0488 12.6583 13.0488 12.3417 12.8536 12.1464L8.20711 7.5L12.8536 2.85355Z"
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+              Close photos
+            </button>
+          </div>
+          {place?.photos?.length > 0 &&
+            place.photos.map((photo) => (
+              <div className="">
+                <img src={"http://localhost:4000/uploads/" + photo} alt="" />
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="px-8 py-8 mt-4 -mx-8 bg-gray-100">
       <h1 className="text-3xl">{place.title}</h1>
       <a
-        className="block my-2 font-semibold underline"
+        className="flex gap-1 my-3 font-semibold underline"
         target="_blank"
         href={"https://maps.google.com/?q=" + place.address}
         rel="noreferrer"
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+          />
+        </svg>
+
         {place.address}
       </a>
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr]">
+        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-3xl overflow-hidden">
           <div className="">
             {place.photos?.[0] && (
               <div className="">
@@ -60,7 +120,10 @@ export default function PlacePage() {
             </div>
           </div>
         </div>
-        <button className="absolute flex items-center gap-1 px-4 py-2 bg-white shadow-md shadow-black bottom-2 right-2 rounded-2xl">
+        <button
+          onClick={() => setShowAllPhotos(true)}
+          className="absolute flex items-center gap-1 px-4 py-2 bg-white shadow-md shadow-black bottom-2 right-2 rounded-2xl"
+        >
           <svg
             width="15"
             height="15"
@@ -77,6 +140,43 @@ export default function PlacePage() {
           </svg>
           Show more photos
         </button>
+      </div>
+      <div className="mt-8 gap-4 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
+        <div className="">
+          <div className="my-4">
+            <h2 className="text-2xl font-semibold">Description</h2>
+            {place.description}
+          </div>
+          Check-in: {place.checkIn}
+          <br />
+          Check-out: {place.checkOut}
+          <br />
+          Max number of guests: {place.maxGuests}
+        </div>
+        <div className="">
+          <div className="p-4 bg-white shadow rounded-2xl">
+            <div className="text-2xl text-center">
+              Price: ${place.price} / per night
+            </div>
+            <div className="mt-4 border rounded-2xl">
+              <div className="flex">
+                <div className="px-4 py-3">
+                  <label htmlFor="">Check in:</label>
+                  <input type="date" className="" />
+                </div>
+                <div className="px-4 py-3 border-l">
+                  <label htmlFor="">Check out:</label>
+                  <input type="date" className="" />
+                </div>
+              </div>
+              <div className="px-4 py-3 border-t">
+                <label htmlFor="">Number of guests:</label>
+                <input type="number" className="" value={1} />
+              </div>
+            </div>
+            <button className="mt-4 primary"> Book this place</button>
+          </div>
+        </div>
       </div>
     </div>
   );
