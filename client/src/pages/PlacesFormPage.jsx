@@ -13,8 +13,8 @@ export default function PlacesFormPage() {
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkout, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState(14);
+  const [checkout, setCheckOut] = useState(11);
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [price, setPrice] = useState(100);
@@ -128,7 +128,6 @@ export default function PlacesFormPage() {
             <h3 className="mt-2 -mb-2">Check in time</h3>
             <input
               type="text"
-              placeholder="14"
               value={checkIn}
               onChange={(ev) => setCheckIn(ev.target.value)}
             />
@@ -137,7 +136,6 @@ export default function PlacesFormPage() {
             <h3 className="mt-2 -mb-2">Check out time</h3>
             <input
               type="text"
-              placeholder="11"
               value={checkout}
               onChange={(ev) => setCheckOut(ev.target.value)}
             />
