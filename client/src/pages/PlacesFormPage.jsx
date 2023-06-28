@@ -17,6 +17,7 @@ export default function PlacesFormPage() {
   const [checkout, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
+  const [price, setPrice] = useState(100);
 
   useEffect(() => {
     if (!id) {
@@ -62,6 +63,7 @@ export default function PlacesFormPage() {
         checkIn,
         checkout,
         maxGuests,
+		price,
 	}
     if (id) {
       //update
@@ -119,7 +121,7 @@ export default function PlacesFormPage() {
           "Check in&out times, max quests",
           "add check in and out times, remember to have some time window for cleaning the room between quests"
         )}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-2">Check in time</h3>
             <input
@@ -144,6 +146,14 @@ export default function PlacesFormPage() {
               type="number"
               value={maxGuests}
               onChange={(ev) => setMaxGuests(ev.target.value)}
+            />
+          </div>
+		  <div>
+            <h3 className="mt-2 -mb-2">Price per night</h3>
+            <input
+              type="number"
+              value={price}
+              onChange={(ev) => setPrice(ev.target.value)}
             />
           </div>
         </div>
