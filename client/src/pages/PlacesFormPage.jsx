@@ -34,6 +34,7 @@ export default function PlacesFormPage() {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkout);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -53,27 +54,28 @@ export default function PlacesFormPage() {
   }
   async function savePlace(ev) {
     ev.preventDefault();
-	const placeData = {
-		title,
-        address,
-        addedPhotos,
-        description,
-        perks,
-        extraInfo,
-        checkIn,
-        checkout,
-        maxGuests,
-		price,
-	}
+    const placeData = {
+      title,
+      address,
+      addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkout,
+      maxGuests,
+      price,
+    };
     if (id) {
       //update
       await axios.put("/places", {
-		id, ...placeData
+        id,
+        ...placeData,
       });
       setRedirect(true);
     } else {
       //new place
-      await axios.post("/places", {...placeData});
+      await axios.post("/places", { ...placeData });
       setRedirect(true);
     }
   }
@@ -148,7 +150,7 @@ export default function PlacesFormPage() {
               onChange={(ev) => setMaxGuests(ev.target.value)}
             />
           </div>
-		  <div>
+          <div>
             <h3 className="mt-2 -mb-2">Price per night</h3>
             <input
               type="number"
