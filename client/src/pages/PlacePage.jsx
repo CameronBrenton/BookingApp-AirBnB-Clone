@@ -26,7 +26,7 @@ export default function PlacePage() {
       <div className="absolute inset-0 min-h-screen text-white bg-black">
         <div className="grid gap-4 p-8 bg-black ">
           <div className="">
-            <h2 className="text-3xl mr-36">Photos of {place.title}</h2>
+            <h2 className="mr-48 text-3xl">Photos of {place.title}</h2>
             <button
               onClick={() => setShowAllPhotos(false)}
               className="fixed flex items-center gap-1 px-4 py-2 text-black bg-white shadow right-12 top-8 shadow-black rounded-2xl"
