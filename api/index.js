@@ -29,7 +29,7 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
-function getUserDataFromToken(req) {
+function getUserDataFromRequest(req) {
 	return new Promise((resolve, reject) => {
 		jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
 			if (err) throw err;
@@ -207,8 +207,9 @@ app.get("/places", async (req, res) => {
   res.json(await Place.find());
 });
 
-app.post("/bookings", (req, res) => {
-  const { place, checkIn, checkOut, numberOfGuests, name, phone } = req.body;
+app.post("/bookings", async (req, res) => {
+	const userData = await getUserDataFromRequest(req)
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
   Booking.create({
     place,
     checkIn,
@@ -216,7 +217,9 @@ app.post("/bookings", (req, res) => {
     numberOfGuests,
     name,
     phone,
-  }).then((err, doc) => {
+	price,
+	user: userData.id,
+  }).then((doc) => {
     res.json(doc);
   }).catch((err) => {
 	throw err;
@@ -224,7 +227,8 @@ app.post("/bookings", (req, res) => {
 });
 
 app.get('/bookings', async (req, res) => {
-	const userData = await getUserDataFromToken(req);
+	const userData = await getUserDataFromRequest(req);
+	res.json( await Booking.find({user: userData.id}));
 });
 
 app.listen(4000);
