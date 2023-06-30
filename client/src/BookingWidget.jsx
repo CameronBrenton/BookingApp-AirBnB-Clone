@@ -5,9 +5,14 @@ export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState('');
+  const [mobile, setMobile] = useState('');
   let numberOfNights = 0;
   if (checkIn && checkOut) {
-	numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
+    numberOfNights = differenceInCalendarDays(
+      new Date(checkOut),
+      new Date(checkIn)
+    );
   }
   return (
     <div className="p-4 bg-white shadow rounded-2xl">
@@ -44,12 +49,28 @@ export default function BookingWidget({ place }) {
             onChange={(ev) => setNumberOfGuests(ev.target.value)}
           />
         </div>
+        {numberOfNights > 0 && (
+          <div className="px-4 py-3 border-t">
+            <label htmlFor="">Your full name:</label>
+            <input
+              type="text"
+              className=""
+              value={name}
+              onChange={(ev) => setName(ev.target.value)}
+            />
+			<label htmlFor="">Phone number:</label>
+            <input
+              type="tel"
+              className=""
+              value={mobile}
+              onChange={(ev) => setMobile(ev.target.value)}
+            />
+          </div>
+        )}
       </div>
       <button className="mt-4 primary">
         Book this place
-		{numberOfNights > 0 && (
-			<span> ${numberOfNights * place.price}</span>
-		)}
+        {numberOfNights > 0 && <span> ${numberOfNights * place.price}</span>}
       </button>
     </div>
   );
