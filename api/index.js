@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User.js");
 const Place = require("./models/Place.js");
+const Booking = require("./models/Booking.js");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
@@ -122,13 +123,13 @@ app.post("/places", (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
-	price,
+    price,
   } = req.body;
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     if (err) throw err;
     const placeDoc = await Place.create({
       owner: userData.id,
-	  price,
+      price,
       title,
       address,
       photos: addedPhotos,
@@ -169,10 +170,10 @@ app.put("/places", async (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
-	price,
+    price,
   } = req.body;
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-	if (err) throw err;
+    if (err) throw err;
     const placeDoc = await Place.findById(id);
     if (userData.id === placeDoc.owner.toString()) {
       placeDoc.set({
@@ -185,16 +186,32 @@ app.put("/places", async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
-		price,
+        price,
       });
       await placeDoc.save();
-	  res.json('ok')
+      res.json("ok");
     }
   });
 });
 
-app.get('/places', async (req,res) => {
-	res.json( await Place.find())
-})
+app.get("/places", async (req, res) => {
+  res.json(await Place.find());
+});
+
+app.post("/bookings", (req, res) => {
+  const { place, checkIn, checkOut, numberOfGuests, name, phone } = req.body;
+  Booking.create({
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    phone,
+  }).then((err, doc) => {
+    res.json(doc);
+  }).catch((err) => {
+	throw err;
+  });
+});
 
 app.listen(4000);
