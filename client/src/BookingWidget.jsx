@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { differenceInCalendarDays } from "date-fns";
+import axios from "axios";
+import { Navigate, redirect } from "react-router-dom";
 
 export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
-  const [name, setName] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [redirect, setRedirect] = useState("");
+
   let numberOfNights = 0;
   if (checkIn && checkOut) {
     numberOfNights = differenceInCalendarDays(
@@ -14,6 +18,25 @@ export default function BookingWidget({ place }) {
       new Date(checkIn)
     );
   }
+
+  async function bookThisPlace() {
+    const response = await axios.post("/bookings", {
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      name,
+      phone,
+      place: place._id,
+      price: numberOfNights * place.price,
+    });
+	const bookingId = response.data._id;
+	setRedirect(`/account/bookings/${bookingId}`);
+  }
+
+  if (redirect) {
+	return <Navigate to={redirect} />
+  }
+
   return (
     <div className="p-4 bg-white shadow rounded-2xl">
       <div className="text-2xl text-center">
@@ -58,17 +81,17 @@ export default function BookingWidget({ place }) {
               value={name}
               onChange={(ev) => setName(ev.target.value)}
             />
-			<label htmlFor="">Phone number:</label>
+            <label htmlFor="">Phone number:</label>
             <input
               type="tel"
               className=""
-              value={mobile}
-              onChange={(ev) => setMobile(ev.target.value)}
+              value={phone}
+              onChange={(ev) => setPhone(ev.target.value)}
             />
           </div>
         )}
       </div>
-      <button className="mt-4 primary">
+      <button onClick={bookThisPlace} className="mt-4 primary">
         Book this place
         {numberOfNights > 0 && <span> ${numberOfNights * place.price}</span>}
       </button>
