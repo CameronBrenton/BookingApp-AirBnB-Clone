@@ -6,7 +6,7 @@ export default function Header(){
 	const {user} = useContext(UserContext);
 	return (
     <header className="flex justify-between">
-      <a href="" className="flex items-center gap-1">
+      <a href="/" className="flex items-center gap-1">
         <svg
           width="15"
           height="15"
