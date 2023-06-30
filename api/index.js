@@ -29,6 +29,15 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
+function getUserDataFromToken(req) {
+	return new Promise((resolve, reject) => {
+		jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+			if (err) throw err;
+			resolve(userData);
+		});
+	});
+}
+
 app.get("/test", (req, res) => {
   res.json("test ok");
 });
@@ -212,6 +221,10 @@ app.post("/bookings", (req, res) => {
   }).catch((err) => {
 	throw err;
   });
+});
+
+app.get('/bookings', async (req, res) => {
+	const userData = await getUserDataFromToken(req);
 });
 
 app.listen(4000);
