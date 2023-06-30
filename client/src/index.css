@@ -2,11 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type="text"],input[type="password"],input[type="email"], input[type="number"], textarea{
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+textarea {
 	@apply w-full px-3 py-2 my-1 border rounded-2xl;
 }
 
-textarea{
+textarea {
 	height: 140px;
 }
 
