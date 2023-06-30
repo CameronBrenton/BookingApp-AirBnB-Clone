@@ -228,7 +228,7 @@ app.post("/bookings", async (req, res) => {
 
 app.get('/bookings', async (req, res) => {
 	const userData = await getUserDataFromRequest(req);
-	res.json( await Booking.find({user: userData.id}));
+	res.json( await Booking.find({user: userData.id}).populate('place'));
 });
 
 app.listen(4000);
