@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { differenceInCalendarDays } from "date-fns";
 
 export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  let numberOfNights = 0;
+  if (checkIn && checkOut) {
+	numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
+  }
   return (
     <div className="p-4 bg-white shadow rounded-2xl">
       <div className="text-2xl text-center">
@@ -40,7 +45,12 @@ export default function BookingWidget({ place }) {
           />
         </div>
       </div>
-      <button className="mt-4 primary"> Book this place</button>
+      <button className="mt-4 primary">
+        Book this place
+		{numberOfNights > 0 && (
+			<span> ${numberOfNights * place.price}</span>
+		)}
+      </button>
     </div>
   );
 }
